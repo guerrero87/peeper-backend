@@ -1,0 +1,26 @@
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Story {
+  id          String       @id @default(uuid())
+  title       String
+  synopsis    String
+  genre       String
+  coverUrl    String?
+  isPremium   Boolean      @default(false)
+  publishedAt DateTime     @default(now())
+  script      StoryScript?
+}
+
+model StoryScript {
+  id      String @id @default(uuid())
+  content Json
+  story   Story  @relation(fields: [storyId], references: [id])
+  storyId String @unique
+}
